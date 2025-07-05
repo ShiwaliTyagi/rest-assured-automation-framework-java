@@ -13,6 +13,7 @@ import static com.spotify.oauth2.api.Route.BASE_PATH;
 public class SpecBuilder {
 
     public static RequestSpecification getRequestSpec(){
+    	System.out.println("BASE_URI from System Property: " + System.getProperty("BASE_URI"));
         return new RequestSpecBuilder().
                 setBaseUri(System.getProperty("BASE_URI")).
      //           setBaseUri("https://api.spotify.com").

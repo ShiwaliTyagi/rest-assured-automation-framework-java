@@ -29,6 +29,13 @@
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
+                    <suiteXmlFiles>
+            			<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+        			</suiteXmlFiles>
+        			<systemPropertyVariables>
+            			<BASE_URI>${BASE_URI}</BASE_URI>
+            			<ACCOUNT_BASE_URI>${ACCOUNT_BASE_URI}</ACCOUNT_BASE_URI>
+        			</systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
@@ -98,5 +105,34 @@
             <version>1.0.2</version>
         </dependency>
     </dependencies>
+    <profiles>
+    <profile>
+        <id>dev</id>
+        <properties>
+            <BASE_URI>https://api.spotify.com</BASE_URI>
+            <ACCOUNT_BASE_URI>https://accounts.spotify.com</ACCOUNT_BASE_URI>
+        </properties>
+    </profile>
+
+    <profile>
+        <id>qa</id>
+        <activation>
+    		<activeByDefault>true</activeByDefault>
+		</activation>
+        <properties>
+            <BASE_URI>https://qa.api.spotify.com</BASE_URI>
+            <ACCOUNT_BASE_URI>https://qa.accounts.spotify.com</ACCOUNT_BASE_URI>
+        </properties>
+    </profile>
+
+    <profile>
+        <id>prod</id>
+        <properties>
+            <BASE_URI>https://api.spotify.com</BASE_URI>
+            <ACCOUNT_BASE_URI>https://accounts.spotify.com</ACCOUNT_BASE_URI>
+        </properties>
+    </profile>
+</profiles>
+    
 
 </project>
