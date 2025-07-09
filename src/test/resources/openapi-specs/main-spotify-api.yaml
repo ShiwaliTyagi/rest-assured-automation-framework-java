@@ -1,0 +1,40 @@
+openapi: 3.0.1
+info:
+  title: Spotify Custom Playlist API
+  description: A custom OpenAPI specification for common Spotify Playlist operations, organized into multiple files.
+  version: 1.0.0
+tags:
+  - name: Playlists
+    description: Operations related to Spotify Playlists
+
+paths:
+  /v1/users/{user_id}/playlists:
+    post:
+      $ref: "./create-playlist.yaml#/post" # Reference the 'post' operation from create-playlist.yaml
+  /v1/playlists/{playlist_id}:
+    get:
+      $ref: "./get-playlist.yaml#/get" # Reference the 'get' operation from get-playlist.yaml
+    put:
+      $ref: "./update-playlist.yaml#/put" # Reference the 'put' operation from update-playlist.yaml
+
+components:
+  schemas:
+    # All reusable schemas are defined in a separate schemas.yaml file
+    PlaylistObject:
+      $ref: "./schemas.yaml#/components/schemas/PlaylistObject"
+    SimplifiedPlaylistObject:
+      $ref: "./schemas.yaml#/components/schemas/SimplifiedPlaylistObject"
+    PublicUserObject:
+      $ref: "./schemas.yaml#/components/schemas/PublicUserObject"
+    ImageObject:
+      $ref: "./schemas.yaml#/components/schemas/ImageObject"
+    FollowersObject:
+      $ref: "./schemas.yaml#/components/schemas/FollowersObject"
+    ExternalUrlObject:
+      $ref: "./schemas.yaml#/components/schemas/ExternalUrlObject"
+    PagingPlaylistTrackObject:
+      $ref: "./schemas.yaml#/components/schemas/PagingPlaylistTrackObject"
+    PlaylistTrackObject:
+      $ref: "./schemas.yaml#/components/schemas/PlaylistTrackObject"
+    TrackObject:
+      $ref: "./schemas.yaml#/components/schemas/TrackObject"

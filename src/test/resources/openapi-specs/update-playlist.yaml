@@ -1,0 +1,55 @@
+# This file defines the PUT operation for updating playlist details.
+# It is referenced by main-spotify-api.yaml
+
+put:
+  tags:
+    - Playlists
+  summary: Change Playlist Details
+  operationId: changePlaylistDetails
+  description: Change a playlist's name and public/private state, and description. (The user must own the playlist).
+  parameters:
+    - name: playlist_id
+      in: path
+      required: true
+      description: The Spotify ID of the playlist.
+      schema:
+        type: string
+      example: 37i9dQZF1DXcBWIGoYBM5M
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The new name for the playlist.
+            public:
+              type: boolean
+              description: If true, the playlist will be public; if false, it will be private.
+            collaborative:
+              type: boolean
+              description: If true, the playlist will become collaborative; if false, it will remain non-collaborative. Note: You can only set `collaborative` to `true` on non-public playlists.
+            description:
+              type: string
+              nullable: true # Spotify allows null description
+              description: The new description for the playlist.
+          additionalProperties: false # Spotify's API for this endpoint is strict; it doesn't accept arbitrary additional properties.
+  responses:
+    "200":
+      description: Playlist updated successfully (No Content). Spotify often returns 200 OK with an empty body.
+      content: {} # Explicitly indicates no response body
+    "204":
+      description: Playlist updated successfully (No Content). Some APIs use 204.
+      content: {}
+    "400":
+      description: Bad Request (e.g., invalid input, trying to set collaborative: true on a public playlist)
+    "401":
+      description: Unauthorized (e.g., invalid or expired access token)
+    "403":
+      description: Forbidden (e.g., user does not own the playlist or required scopes are missing)
+    "404":
+      description: Not Found (e.g., playlist ID does not exist)
+    "429":
+      description: Too Many Requests (e.g., rate limit exceeded)

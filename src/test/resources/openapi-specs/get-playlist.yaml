@@ -1,0 +1,45 @@
+# This file defines the GET operation for retrieving a playlist by ID.
+# It is referenced by main-spotify-api.yaml
+
+get:
+  tags:
+    - Playlists
+  summary: Get a Playlist
+  operationId: getPlaylist
+  description: Get a Spotify playlist.
+  parameters:
+    - name: playlist_id
+      in: path
+      required: true
+      description: The Spotify ID of the playlist.
+      schema:
+        type: string
+      example: 37i9dQZF1DXcBWIGoYBM5M # Example from Spotify docs for a popular playlist
+    - name: market
+      in: query
+      required: false
+      description: An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned.
+      schema:
+        type: string
+        pattern: "^[A-Z]{2}$"
+      example: US
+    - name: fields
+      in: query
+      required: false
+      description: Filters for the query. A comma-separated list of the fields to return. If omitted, all fields are returned.
+      schema:
+        type: string
+      example: description,uri,tracks.items(added_at,track(name,href))
+  responses:
+    "200":
+      description: A playlist object.
+      content:
+        application/json:
+          schema:
+            $ref: "./schemas.yaml#/components/schemas/PlaylistObject" # Reference to schema in schemas.yaml
+    "401":
+      description: Unauthorized (e.g., invalid or expired access token)
+    "404":
+      description: Not Found (e.g., playlist ID does not exist)
+    "429":
+      description: Too Many Requests (e.g., rate limit exceeded)

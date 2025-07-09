@@ -7,18 +7,23 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-
+import com.atlassian.oai.validator.OpenApiInteractionValidator;
+import com.atlassian.oai.validator.restassured.OpenApiValidationFilter;
 import static com.spotify.oauth2.api.Route.BASE_PATH;
 
-public class SpecBuilder {
 
+public class SpecBuilder {
+	static OpenApiValidationFilter validationFilter = new OpenApiValidationFilter(
+    	    "src/test/resources/openapi-specs/main-spotify-api.yaml"
+    	);
     public static RequestSpecification getRequestSpec(){
-    	System.out.println("BASE_URI from System Property: " + System.getProperty("BASE_URI"));
+    	
         return new RequestSpecBuilder().
                 setBaseUri(System.getProperty("BASE_URI")).
      //           setBaseUri("https://api.spotify.com").
                 setBasePath(BASE_PATH).
                 setContentType(ContentType.JSON).
+                addFilter(validationFilter).
                 addFilter(new AllureRestAssured()).
                 log(LogDetail.ALL).
                 build();
@@ -29,6 +34,7 @@ public class SpecBuilder {
                 setBaseUri(System.getProperty("ACCOUNT_BASE_URI")).
     //            setBaseUri("https://accounts.spotify.com").
                 setContentType(ContentType.URLENC).
+              //  addFilter(validationFilter).
                 addFilter(new AllureRestAssured()).
                 log(LogDetail.ALL).
                 build();
